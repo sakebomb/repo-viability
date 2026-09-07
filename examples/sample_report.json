@@ -1,0 +1,33 @@
+{
+  "schema_version": "0.1",
+  "repo": "pallets/flask",
+  "html_url": "https://github.com/pallets/flask",
+  "trust_score": 78,
+  "health_score": 84,
+  "authenticity": "likely_genuine",
+  "flags": [],
+  "ratios": {
+    "stars": 69000,
+    "forks": 16000,
+    "open_issues": 8,
+    "watchers": 2300,
+    "forks_per_star": 0.23,
+    "open_issues_per_star": 0.0001
+  },
+  "health": {
+    "license": "BSD-3-Clause",
+    "pushed_days_ago": 3.2,
+    "contributor_sample_count": 30,
+    "archived": false,
+    "default_branch": "main"
+  },
+  "sample": {
+    "stargazers_scored": 25,
+    "empty_account_share": 0.08,
+    "young_account_share": 0.04
+  },
+  "evidence": [
+    "2/25 sampled recent stargazers look empty/low-activity (8%)."
+  ],
+  "disclaimer": "Suspected signals only. Empty-account share is estimated from a recent stargazer sample, not a census of every star."
+}
