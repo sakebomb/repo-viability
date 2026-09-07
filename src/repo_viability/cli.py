@@ -26,11 +26,16 @@ def analyze(owner: str, name: str, sample: int, token: str | None) -> dict:
     gh = GitHub(token=token)
     repo = gh.repo(owner, name)
     contributors = gh.contributors(owner, name, per_page=30)
-    stars = []
+    stars: list = []
+    stargazers_status: int | None = None
     try:
         stars = gh.stargazers(owner, name, per_page=min(sample, 100))
-    except GitHubError:
+        if not isinstance(stars, list):
+            stars = []
+            stargazers_status = 0
+    except GitHubError as exc:
         stars = []
+        stargazers_status = exc.status
 
     accounts: list[dict] = []
     rows = stars[:sample]
@@ -46,7 +51,21 @@ def analyze(owner: str, name: str, sample: int, token: str | None) -> dict:
             continue
         accounts.append(classify_account(profile, starred_at))
 
-    return score_report(repo, accounts, contributor_count=len(contributors))
+    report = score_report(repo, accounts, contributor_count=len(contributors))
+    if stargazers_status in {401, 403, 404} and not accounts:
+        flags = list(report.get("flags") or [])
+        if "stargazers_unreadable" not in flags:
+            flags.append("stargazers_unreadable")
+        report["flags"] = flags
+        evidence = list(report.get("evidence") or [])
+        evidence.append(
+            "Stargazer identities are not readable for this token. GitHub restricted "
+            "stargazer listing to admins/collaborators (2026); this is not a fraud conviction."
+        )
+        report["evidence"] = evidence
+        if report.get("authenticity") != "unknown":
+            report["authenticity"] = "unknown"
+    return report
 
 
 def render_text(report: dict) -> str:

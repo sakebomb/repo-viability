@@ -19,6 +19,8 @@ PYTHONPATH=src python3 -m repo_viability pallets/flask --json
 
 No `npm install`. A token is optional (60 req/hr anonymous, 5,000 with a classic PAT that can read public repos).
 
+**Stargazer identities (2026):** GitHub now limits `/repos/{owner}/{repo}/stargazers` to admins and collaborators. For everyone else the CLI still returns health/ratio scores, sets `authenticity` to `unknown`, and adds `stargazers_unreadable`. That is a suspected-signal gap, not a fraud conviction. Use `/repos/{owner}/{repo}/stargazers/history` (counts only) in a later burst/MAD mode — do not scrape HTML to dodge the API.
+
 ## What it measures (v0.1)
 
 | Family | Signals | Status |
